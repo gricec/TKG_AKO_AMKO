@@ -1,0 +1,53 @@
+---
+
+- hosts: localhost
+  connection: local
+  gather_facts: no
+  become: yes
+  vars:
+     ansible_python_interpreter: '{{ ansible_playbook_python }}'
+  tasks:
+    
+    - name: create gslb-members file
+      shell:
+        cmd: cp ~/.kube/config gslb-members       
+    
+    - name: create gslb-config-secret
+      shell:
+        cmd: kubectl create secret generic gslb-config-secret --from-file gslb-members -n avi-system 
+
+        #- name: Add stable chart for AMKO
+        #community.kubernetes.helm_repository:
+        #name: amko
+        #repo_url: "https://avinetworks.github.io/avi-helm-charts/charts/stable/amko"
+        #tags: addrepo
+
+    - name: Set vars for values
+      shell: tkg get cluster | awk '/cluster/ {print $1}'
+      register: clusters
+      tags: vars
+
+    - name: Add vars to jinja template
+      blockinfile:
+         path: amkoval.yaml
+         marker: "<!-- {mark} ANSIBLE MANAGED BLOCK -->"
+         insertafter: "memberClusters:"
+         block: |
+                - clusterContext: "{{ clusters }}-admin@{{ clusters }}"
+      loop: "{{ clusters.stdout_lines }}"
+      tags: vars
+
+
+
+    - debug:
+        var: clusters    
+      tags: vars
+
+    - name: Deploy AMKO
+      community.kubernetes.helm:
+         name: test
+         chart_ref: amko/amko
+         values: "{{ lookup('template', '/home/chris/amkovalues.yaml') | from_yaml }}"
+         namespace: avi-system
+      tags: deploy
+

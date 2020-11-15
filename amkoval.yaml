@@ -1,0 +1,74 @@
+# Default values for ako.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 1
+
+image:
+  repository: avinetworks/amko
+  pullPolicy: IfNotPresent
+
+configs:
+  controllerVersion: "20.1.2"
+  #shardVSSize: "LARGE"
+  #shardVSPrefix: ""
+  #fullSyncFrequency: "1800" #seconds
+  #cloudName: "Default-Cloud"
+  #defaultDomain: ""
+  #disableStaticRouteSync: "false"
+  #ingressApi: "corev1" #enum: extensionv1 and corev1 - if not set default to corev1
+  #defaultIngController: "true"
+  #subnetIP: "192.168.68.0"
+  #subnetPrefix: "24" # Subnet Prefix of the data network
+  #networkName: "VM Network" # Network Name of the data network
+  #l7ShardingScheme: "hostname"
+  #cniPlugin: "" #enum: calico|canal|flannel
+  #logLevel: "INFO" #enum: INFO|DEBUG|WARN|ERROR
+  gslbLeaderController: "192.168.68.60"
+  memberClusters:
+<!-- BEGIN ANSIBLE MANAGED BLOCK --> cluster5
+    - clusterContext: "cluster5-admin@cluster5"
+<!-- END ANSIBLE MANAGED BLOCK --> cluster5
+<!-- BEGIN ANSIBLE MANAGED BLOCK --> cluster4
+    - clusterContext: "cluster4-admin@cluster4"
+<!-- END ANSIBLE MANAGED BLOCK --> cluster4
+<!-- BEGIN ANSIBLE MANAGED BLOCK --> cluster3
+    - clusterContext: "cluster3-admin@cluster3"
+<!-- END ANSIBLE MANAGED BLOCK --> cluster3
+<!-- BEGIN ANSIBLE MANAGED BLOCK --> cluster2
+    - clusterContext: "cluster2-admin@cluster2"
+<!-- END ANSIBLE MANAGED BLOCK --> cluster2
+
+gslbLeaderCredentials:
+  username: "admin"
+  password: "Ja10bb14!"
+
+
+
+
+globalDeploymentPolicy:
+  appSelector:
+    label: {gslb: "yes"}
+    #namespaceSelector:
+    #label: {ns: "gslb"}
+  matchClusters: 
+<!-- BEGIN ANSIBLE MANAGED BLOCK 2 --> cluster5
+    - clusterContext: "cluster5-admin@cluster5"
+<!-- END ANSIBLE MANAGED BLOCK 2 --> cluster5
+<!-- BEGIN ANSIBLE MANAGED BLOCK 2 --> cluster4
+    - clusterContext: "cluster4-admin@cluster4"
+<!-- END ANSIBLE MANAGED BLOCK 2 --> cluster4
+<!-- BEGIN ANSIBLE MANAGED BLOCK 2 --> cluster3
+    - clusterContext: "cluster3-admin@cluster3"
+<!-- END ANSIBLE MANAGED BLOCK 2 --> cluster3
+<!-- BEGIN ANSIBLE MANAGED BLOCK 2 --> cluster2
+    - clusterContext: "cluster2-admin@cluster2"
+<!-- END ANSIBLE MANAGED BLOCK 2 --> cluster2
+
+    #trafficSplit:  "1"
+
+
+
+
+mountPath: "/log"
+logFile: "avi.log"

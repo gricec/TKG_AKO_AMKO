@@ -1,0 +1,71 @@
+---
+
+- hosts: localhost
+  connection: local
+  gather_facts: no
+  become: yes
+  vars:
+     ansible_python_interpreter: '{{ ansible_playbook_python }}'
+  tasks:
+
+
+   - python_requirements_facts:
+       dependencies:
+         - openshift
+         - requests
+         - kubernetes
+     tags: pcheck
+
+   - name: Install kubectl
+     shell: |
+       curl -LO "https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl"
+       chmod +x ./kubectl
+       sudo mv ./kubectl /usr/local/bin/kubectl     
+    
+   - name: Create Cluster
+     shell: 
+       cmd: tkg create cluster "{{ cluster }}" --plan=dev 
+   
+   - name: Get TKG secret     
+     shell: 
+       cmd: tkg get credentials "{{ cluster }}"
+   
+   - name: Selecting Cluster
+     shell:
+       cmd:  kubectl config use-context "{{ cluster }}"-admin@{{ cluster }}    
+
+   - name: Install Helm V3
+     shell: |
+       curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3
+       chmod 700 get_helm.sh
+       ./get_helm.sh
+
+   - name: Create Avi-system namespace
+     shell:
+       cmd: kubectl create namespace avi-system --kubeconfig ~/.kube/config
+     become: yes
+     # community.kubernetes.k8s:
+     #  name: avi-system
+     #  api_version: v1
+     #  kind: namespace
+     #  state: present
+     tags: namespace
+
+   - name: Add stable chart for AKO
+     community.kubernetes.helm_repository:
+        name: ako
+        repo_url: "https://avinetworks.github.io/avi-helm-charts/charts/stable/ako"
+     tags: addrepo
+
+   - name: Deploy AKO
+     community.kubernetes.helm:
+         name: test
+         chart_ref: ako/ako
+         values: "{{ lookup('template', '/home/chris/values2.yaml') | from_yaml }}"
+         namespace: avi-system
+     tags: deploy
+
+   - name: Deploy green app and LoadBalancer service
+     shell:
+       cmd: kubectl apply -f /home/chris/{{ file }}.yaml
+     tags: app  
