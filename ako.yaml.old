@@ -24,19 +24,16 @@
     
    - name: Create Cluster
      shell: 
-       cmd: tkg create cluster "{{ item }}" --plan=dev 
-     with_items: "{{ cluster }}" 
-     
+       cmd: tkg create cluster "{{ cluster }}" --plan=dev 
+   
    - name: Get TKG secret     
      shell: 
-       cmd: tkg get credentials "{{ item }}"
-     with_items: "{{ cluster }}"  
+       cmd: tkg get credentials "{{ cluster }}"
    
    - name: Selecting Cluster
      shell:
        cmd:  kubectl config use-context "{{ cluster }}"-admin@{{ cluster }}    
-     tags: app
-   
+
    - name: Install Helm V3
      shell: |
        curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3
