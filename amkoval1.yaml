@@ -26,7 +26,7 @@ configs:
 
 gslbLeaderCredentials:
   username: admin
-  password: Ja10bb14!
+  password: {{password}}
 
 globalDeploymentPolicy:
   # appSelector takes the form of:
