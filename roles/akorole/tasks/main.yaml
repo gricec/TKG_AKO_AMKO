@@ -1,37 +1,9 @@
 ---
 
-- hosts: localhost
-  connection: local
-  gather_facts: no
-  become: yes
-  vars:
-     ansible_python_interpreter: '{{ ansible_playbook_python }}'
-  tasks:
-
-
-   - python_requirements_facts:
-       dependencies:
-         - openshift
-         - requests
-         - kubernetes
-     tags: pcheck
-
-   # - name: Install kubectl
-   #  shell: |
-   #    curl -LO "https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl"
-   #    chmod +x ./kubectl
-   #    sudo mv ./kubectl /usr/local/bin/kubectl     
-    
-       #- name: Create Cluster
-       #shell: 
-       #cmd: tkg create cluster "{{ item }}" --plan=dev 
-       #with_items: "{{ cluster }}" 
-       #tags: create 
      
    - name: Get TKG secret     
      shell: 
-       cmd: tkg get credentials "{{ item }}"
-     with_items: "{{ cluster }}"  
+       cmd: tkg get credentials "{{ cluster }}"
    
    - name: Selecting Cluster
      shell:

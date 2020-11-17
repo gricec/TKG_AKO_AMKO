@@ -1,0 +1,36 @@
+---
+
+- hosts: localhost
+  connection: local
+  gather_facts: no
+  become: yes
+  vars:
+     ansible_python_interpreter: '{{ ansible_playbook_python }}'
+  tasks:
+
+
+   - python_requirements_facts:
+       dependencies:
+         - openshift
+         - requests
+         - kubernetes
+     tags: pcheck
+
+    
+   - name: Create Cluster
+     shell: 
+       cmd: tkg create cluster "{{ item }}" --plan=dev 
+     with_items: "{{ cluster }}" 
+     tags: create 
+     
+   - name: Get TKG secret     
+     shell: 
+       cmd: tkg get credentials "{{ item }}"
+     with_items: "{{ cluster }}"  
+   
+   - name: Selecting Cluster
+     shell:
+       cmd:  kubectl config use-context "{{ cluster }}"-admin@{{ cluster }}
+     include_task: deploy_ako.yaml  
+     tags: app
+   
