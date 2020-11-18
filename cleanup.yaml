@@ -18,4 +18,9 @@
      
    - name: Delete gslb-members
      shell:
-       cmd: rm -rf gslb-members       
+       cmd: rm -rf gslb-members 
+
+   - name: Remove deployment/service
+     shell:
+       cmd: kubectl delete -f /home/chris/green.yaml      
+
