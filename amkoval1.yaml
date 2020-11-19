@@ -9,8 +9,8 @@ image:
   pullPolicy: IfNotPresent
 
 configs:
-  gslbLeaderController: "192.168.68.60"
-  controllerVersion: "20.1.2"
+  gslbLeaderController: "{{ controller }}"
+  controllerVersion: "{{ ctrver }}"
   memberClusters:
 #<!-- BEGIN ANSIBLE MANAGED BLOCK --> cluster4
     - clusterContext: "cluster4-admin@cluster4"

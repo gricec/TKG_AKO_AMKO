@@ -16,7 +16,7 @@ AKOSettings:
   deleteConfig: "false" # Has to be set to true in configmap if user wants to delete AKO created objects from AVI 
   disableStaticRouteSync: "false" # If the POD networks are reachable from the Avi SE, set this knob to true.
   clusterName: "{{ cluster }}" # A unique identifier for the kubernetes cluster, that helps distinguish the objects for this cluster in the avi controller. // MUST-EDIT
-  cniPlugin: "calico" # Set the string if your CNI is calico or openshift. enum: calico|canal|flannel|openshift 
+  cniPlugin: "{{ cni }}" # Set the string if your CNI is calico or openshift. enum: calico|canal|flannel|openshift 
 
 ### This section outlines the network settings for virtualservices. 
 NetworkSettings:
@@ -28,9 +28,9 @@ NetworkSettings:
   #     cidrs:
   #       - 10.0.0.1/24
   #       - 11.0.0.1/24
-  subnetIP: "192.168.68.0" # Subnet IP of the vip network
-  subnetPrefix: "24" # Subnet Prefix of the vip network
-  networkName: "VM Network" # Network Name of the vip network
+  subnetIP: "{{ vipnet }}" # Subnet IP of the vip network
+  subnetPrefix: "{{ vipmask }}" # Subnet Prefix of the vip network
+  networkName: "{{ vipname }}" # Network Name of the vip network
 
 ### This section outlines all the knobs  used to control Layer 7 loadbalancing settings in AKO.
 L7Settings:
@@ -46,10 +46,10 @@ L4Settings:
 
 ### This section outlines settings on the Avi controller that affects AKO's functionality.
 ControllerSettings:
-  serviceEngineGroupName: "osseg1" # Name of the ServiceEngine Group.
-  controllerVersion: "20.1.2" # The controller API version
-  cloudName: "noaccess" # The configured cloud name on the Avi controller.
-  controllerIP: "192.168.68.60"
+  serviceEngineGroupName: "{{ seg }}" # Name of the ServiceEngine Group.
+  controllerVersion: "{{ ctrver  }}" # The controller API version
+  cloudName:  "{{ cloud }}" # The configured cloud name on the Avi controller.
+  controllerIP: "{{ controller  }}"
 
 nodePortSelector: # Only applicable if serviceType is NodePort
   key: ""
@@ -69,7 +69,7 @@ podSecurityContext: {}
 
 avicredentials:
   username: "admin"
-  password: {{password}}
+  password: "Ja10bb14!"
 
 
 service:
@@ -80,3 +80,4 @@ service:
 persistentVolumeClaim: ""
 mountPath: "/log"
 logFile: "avi.log"
+

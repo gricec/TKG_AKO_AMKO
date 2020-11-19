@@ -2,7 +2,7 @@
 
 controller: 192.168.68.60
 ctrver: 20.1.2
-cloud: noaccess
+cloud: "noaccess"
 seg: osseg1
 cni: calico
 vipnet: 192.168.68.0
