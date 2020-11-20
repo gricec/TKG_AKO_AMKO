@@ -10,14 +10,12 @@ ansible-galaxy collection install community.kubernetes.helm
 
 
 INSTRUCTIONS
-Run akorole.yaml  first, include names of clusters in extra vars as cli argument
+Run akorole.yaml  first, include names of clusters in extra vars as cli argument. File dictates what deployment to run. Hack.yaml deploys  app, service, sec ingress and HostRule CRD for WAF
 
-ansible-playbook akorole.yaml -Kk -u chris --extra-vars='{"clusters":[ "cluster2", "cluster3", "cluster4"], "file": "green"}'
+ansible-playbook akorole.yaml -Kk -u chris --extra-vars='{"clusters":[ "cluster2", "cluster3", "cluster4"], "file": "hack"}'
 
 
-Creates TKG Guest Clusters and installs AKO on each along with simple app and type loadBalancer service
-
-Run AMKO.yaml 
+Next run AMKO.yaml 
 
 ansible-playbook amko.yaml 
 
