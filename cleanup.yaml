@@ -22,5 +22,5 @@
 
    - name: Remove deployment/service
      shell:
-       cmd: kubectl delete -f /home/chris/green.yaml      
+       cmd: kubectl delete -f /home/chris/ansible/hackazon.yaml      
 
