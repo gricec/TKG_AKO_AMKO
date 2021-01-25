@@ -1,0 +1,11 @@
+---
+
+   - name: Selecting Cluster
+     shell:
+       cmd:  kubectl config use-context "{{ cluster }}"-admin@{{ cluster }}
+     
+
+   - name: Deploy green app and LoadBalancer service
+     shell:
+       cmd: kubectl apply -f /home/chris/ansible/{{ file }}.yaml
+

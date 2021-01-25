@@ -41,7 +41,6 @@
          namespace: avi-system
      tags: deploy
 
-   - name: Deploy green app and LoadBalancer service
-     shell:
-       cmd: kubectl apply -f {{ file }}.yaml
-     tags: app  
+     #- name: Deploy green app and LoadBalancer service
+     #shell:
+     #  cmd: kubectl apply -f {{ file }}.yaml

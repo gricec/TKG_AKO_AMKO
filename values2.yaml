@@ -28,9 +28,9 @@ NetworkSettings:
   #     cidrs:
   #       - 10.0.0.1/24
   #       - 11.0.0.1/24
-  subnetIP: "{{ vipnet }}" # Subnet IP of the vip network
-  subnetPrefix: "{{ vipmask }}" # Subnet Prefix of the vip network
-  networkName: "{{ vipname }}" # Network Name of the vip network
+  #subnetIP: "{{ vipnet }}" # Subnet IP of the vip network
+  #subnetPrefix: "{{ vipmask }}" # Subnet Prefix of the vip network
+  #networkName: "{{ vipname }}" # Network Name of the vip network
 
 ### This section outlines all the knobs  used to control Layer 7 loadbalancing settings in AKO.
 L7Settings:
@@ -49,7 +49,7 @@ ControllerSettings:
   serviceEngineGroupName: "{{ seg }}" # Name of the ServiceEngine Group.
   controllerVersion: "{{ ctrver  }}" # The controller API version
   cloudName:  "{{ cloud }}" # The configured cloud name on the Avi controller.
-  controllerIP: "{{ controller  }}"
+  controllerHost: "{{ controller  }}"
 
 nodePortSelector: # Only applicable if serviceType is NodePort
   key: ""
