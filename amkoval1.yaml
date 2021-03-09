@@ -9,18 +9,15 @@ image:
   pullPolicy: IfNotPresent
 
 configs:
-  gslbLeaderController: "{{ controller }}"
+  gslbLeaderController: 192.168.68.60
   controllerVersion: "{{ ctrver }}"
   memberClusters:
-#<!-- BEGIN ANSIBLE MANAGED BLOCK --> cluster4
-    - clusterContext: "cluster4-admin@cluster4"
-#<!-- END ANSIBLE MANAGED BLOCK --> cluster4
-#<!-- BEGIN ANSIBLE MANAGED BLOCK --> cluster3
-    - clusterContext: "cluster3-admin@cluster3"
-#<!-- END ANSIBLE MANAGED BLOCK --> cluster3
 #<!-- BEGIN ANSIBLE MANAGED BLOCK --> cluster2
     - clusterContext: "cluster2-admin@cluster2"
 #<!-- END ANSIBLE MANAGED BLOCK --> cluster2
+#<!-- BEGIN ANSIBLE MANAGED BLOCK --> cluster1
+    - clusterContext: "cluster1-admin@cluster1"
+#<!-- END ANSIBLE MANAGED BLOCK --> cluster1
   refreshInterval: 1800
   logLevel: "INFO"
 
@@ -47,15 +44,12 @@ globalDeploymentPolicy:
   # list of all clusters that the GDP object will be applied to, can take any/all values
   # from .configs.memberClusters
   matchClusters:
-#<!-- BEGIN ANSIBLE MANAGED BLOCK 2 --> cluster4
-    - "cluster4-admin@cluster4"
-#<!-- END ANSIBLE MANAGED BLOCK 2 --> cluster4
-#<!-- BEGIN ANSIBLE MANAGED BLOCK 2 --> cluster3
-    - "cluster3-admin@cluster3"
-#<!-- END ANSIBLE MANAGED BLOCK 2 --> cluster3
 #<!-- BEGIN ANSIBLE MANAGED BLOCK 2 --> cluster2
     - "cluster2-admin@cluster2"
 #<!-- END ANSIBLE MANAGED BLOCK 2 --> cluster2
+#<!-- BEGIN ANSIBLE MANAGED BLOCK 2 --> cluster1
+    - "cluster1-admin@cluster1"
+#<!-- END ANSIBLE MANAGED BLOCK 2 --> cluster1
   # trafficSplit:
   #   - cluster: "cluster1-admin"
   #     weight: 8

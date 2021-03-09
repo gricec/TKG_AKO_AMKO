@@ -15,5 +15,5 @@
 
    - name: Remove deployment/service
      shell:
-       cmd: kubectl delete -f /home/chris/ansible/hack.yaml      
+       cmd: kubectl delete -f /home/chris/ansible/hacknp.yaml      
 

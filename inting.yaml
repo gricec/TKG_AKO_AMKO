@@ -1,0 +1,23 @@
+---
+
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: hackazon-int
+  #labels:
+  #  gslb: "yes"
+spec:
+  tls:
+  - hosts:
+      - hackazon.int.avidemo.vmware.com
+    secretName: bs1-tls
+  rules:
+  - host: hackazon.int.avidemo.vmware.com
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: hackazon
+          servicePort: 80
+
+---
